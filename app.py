@@ -1,8 +1,10 @@
 import requests
+from datetime import datetime
 from flask import Flask, request, make_response, jsonify
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'm.m@tesco.com'
+
 
 # Time is returned in unix, UTC and needs to be converted to 'readable format'
 
@@ -11,17 +13,14 @@ app.config['SECRET_KEY'] = 'm.m@tesco.com'
 def welcome():
     url = 'http://api.openweathermap.org/data/2.5/weather?q=Leeds&APPID=c024e85cef8f0fc928c3f0ef85d7ad00&units=metric'
     res = requests.get(url)
-
     data = res.json()
+    time_format = '%H:%M:%S'
+    temp = str(data['main']['temp_max'])
 
-    temp = data['main']['temp_max']
-    time = data['sys']['sunset']
-    print('temp ' + str(temp))
-    print('time ' + str(time))
-
-
-
-    return jsonify({'message': 'standby'})
+    time = str(datetime.utcfromtimestamp(data['sys']['sunset']).strftime(time_format))
+    print('temp ' + temp)
+    print('time ' + time)
+    return jsonify({'Max Temperature': temp}, {'Sunset Time': time})
 
 
 @app.route('/WEATHER', methods=['HEAD'])
