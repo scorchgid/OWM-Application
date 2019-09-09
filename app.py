@@ -8,24 +8,35 @@ import requests
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'm.m@tesco.com'
-app.config['TOKEN'] = 'm.m@tesco.com'
 
 
 @app.route('/')
 def welcome():
     print('Please provide key: ')
     encoded_jwt_key = input()
-
     print('Please provide token: ')
     encoded_jwt_token = input()
-
     return get_weather_data(encoded_jwt_key, encoded_jwt_token)
 
 
 @app.route('/weather', methods=['HEAD'])
 def weather():
     authorization = request.headers.get("AUTHORIZATION")
-    print("authorization " + authorization)
+    return render_template('weather.html')
+    # return render_template('weather.html',)
+    #jsonify({'Message': 'Token is missing or invalid'}
+
+    # Check if bearer is undefined
+    # if type(authorization) != 'str':
+    auth = request.authorization
+    if auth and auth.password == app.config['SECRET_KEY']:
+        token = authorization.replace("Bearer ", "")
+        # r = requests.post()
+        print(get_weather_data(app.config['SECRET_KEY'], token))
+
+    else:
+        make_response(render_template('weather.html'), 401)
+
     return render_template('weather.html')
 
 
