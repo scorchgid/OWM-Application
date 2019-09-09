@@ -48,8 +48,12 @@ def authorise(key, token):
     time_format = '%H:%M:%S'
     temp = str(data['main']['temp_max']) + ' C'
     time = str(datetime.utcfromtimestamp(data['sys']['sunset']).strftime(time_format))
-    return jsonify({'Max Temperature': temp, 'Sunset Time': time})
+    return jsonify({
+        "Location": location,
+        "data":
+            {'Max Temperature': temp, 'Sunset Time': time}
+    })
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

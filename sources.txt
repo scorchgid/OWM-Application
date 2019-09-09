@@ -26,3 +26,5 @@ https://pyjwt.readthedocs.io/en/latest/
 
 https://www.youtube.com/watch?v=NrYH6HiMk7E
 https://www.youtube.com/watch?v=UwmHRTGalIY
+
+https://softwareengineering.stackexchange.com/questions/158603/what-does-the-term-payload-mean-in-programming
