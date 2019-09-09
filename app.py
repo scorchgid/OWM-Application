@@ -19,8 +19,7 @@ def welcome():
     print('Please provide token: ')
     encoded_jwt_token = input()
 
-    authorise(encoded_jwt_key, encoded_jwt_token)
-    return "hello"
+    return get_weather_data(encoded_jwt_key, encoded_jwt_token)
 
 
 @app.route('/weather', methods=['HEAD'])
@@ -30,12 +29,11 @@ def weather():
     return render_template('weather.html')
 
 
-def authorise(key, token):
-    global location
+def get_weather_data(key, token):
     decoded_jwt = decode(key, token)
     url = url_builder(decoded_jwt)
     data = open_weather_retrieval(url)
-    json = configure_data(data)
+    return configure_data(data, decoded_jwt)
 
 
 def decode(key, token):
@@ -61,10 +59,11 @@ def open_weather_retrieval(url):
     return data
 
 
-def configure_data(data):
+def configure_data(data, decoded_jwt):
     time_format = '%H:%M:%S'
     temp = str(data['main']['temp_max']) + ' C'
     time = str(datetime.utcfromtimestamp(data['sys']['sunset']).strftime(time_format))
+    location = decoded_jwt['location']
     return jsonify({
         "Location": location,
         "data":
