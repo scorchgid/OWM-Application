@@ -11,9 +11,8 @@ app.config['SECRET_KEY'] = 'm.m@tesco.com'
 
 
 @app.route('/')
-def welcome():
-    print('Please provide key: ')
-    encoded_jwt_key = input()
+def debug_endpoint():
+    encoded_jwt_key = app.config['SECRET_KEY']
     print('Please provide token: ')
     encoded_jwt_token = input()
     return get_weather_data(encoded_jwt_key, encoded_jwt_token)
@@ -22,17 +21,15 @@ def welcome():
 @app.route('/weather', methods=['HEAD'])
 def weather():
     authorization = request.headers.get("AUTHORIZATION")
-    return render_template('weather.html')
+    # return render_template('weather.html')
     # return render_template('weather.html',)
-    #jsonify({'Message': 'Token is missing or invalid'}
-
+    # jsonify({'Message': 'Token is missing or invalid'}
     # Check if bearer is undefined
     # if type(authorization) != 'str':
     auth = request.authorization
     if auth and auth.password == app.config['SECRET_KEY']:
         token = authorization.replace("Bearer ", "")
-        # r = requests.post()
-        print(get_weather_data(app.config['SECRET_KEY'], token))
+        get_weather_data(app.config['SECRET_KEY'], token)
 
     else:
         make_response(render_template('weather.html'), 401)
