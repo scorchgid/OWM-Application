@@ -1,0 +1,28 @@
+flask
+
+I would like you to write a python application that will setup a web server with a single endpoint exposed.
+I will hit the endpoint with a curl something like:
+CURL -H 'ACCEPT: APPLICATION/JSON' -H "AUTHORIZATION: BEARER ${TOKEN}" HTTPS://{HOSTNAME}/WEATHER
+
+This endpoint should use JWT to authenticate the request,
+(A HS256 algorithm JWT, please provide a key for us to test with) upon successful authentication the application will request the weather for Leeds, West Yorkshire from the OpenWeatherMap API available online.
+(You will need to register and get an API token, it can take an hour to work). You can use mine if you like but I don’t know when it will expire.
+
+As a cheat here is the weather I want using my key: http://api.openweathermap.org/data/2.5/weather?q=Leeds&APPID=c024e85cef8f0fc928c3f0ef85d7ad00  😊
+
+I would like the returned JSON payload to contain the max temperature in Degrees C and time in readable format for the sunset.
+
+Please make this code PRODUCTION ready. I will leave the interpretation of production ready up to you but needless to say I expect some unit testing.
+
+Don’t worry too much about comments, treat it like we are not dumb and can read code. If you can upload it to Github and send us the link that would be brilliant.
+
+
+cURL breakdown
+CURL - Command
+-H - header command option
+'ACCEPT: APPLICATION/JSON' - header command, Accept -
+-H
+"AUTHORIZATION: BEARER ${TOKEN}" -
+
+HTTPS://{HOSTNAME}/WEATHER - url
+
