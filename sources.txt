@@ -20,3 +20,6 @@ https://www.youtube.com/watch?v=kvux1SiRIJQ
 https://www.youtube.com/watch?v=PWZKTWJ9bJE
 
 https://stackoverflow.com/questions/3682748/converting-unix-timestamp-string-to-readable-date
+https://www.epochconverter.com/
+
+https://pyjwt.readthedocs.io/en/latest/
