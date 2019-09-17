@@ -30,3 +30,5 @@ https://www.youtube.com/watch?v=UwmHRTGalIY
 https://softwareengineering.stackexchange.com/questions/158603/what-does-the-term-payload-mean-in-programming
 
 https://youtu.be/7nafaH9SddU?t=656
+
+https://flask-restplus.readthedocs.io/en/stable/errors.html

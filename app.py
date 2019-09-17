@@ -1,6 +1,5 @@
 from datetime import datetime
-from flask import Flask, request, make_response, jsonify, Response, render_template
-
+from flask import Flask, request, jsonify, Response, abort
 import jwt
 import requests
 
@@ -18,7 +17,7 @@ def debug_endpoint():
     return get_weather_data(encoded_jwt_key, encoded_jwt_token)
 
 
-@app.route('/weather', methods=['HEAD'])
+@app.route('/weather', methods=['GET'])
 def weather():
     authorization = request.headers.get("AUTHORIZATION")
     # return render_template('weather.html')
@@ -26,28 +25,32 @@ def weather():
     # jsonify({'Message': 'Token is missing or invalid'}
     # Check if bearer is undefined
     # if type(authorization) != 'str':
-    auth = request.authorization
-    if auth and auth.password == app.config['SECRET_KEY']:
-        token = authorization.replace("Bearer ", "")
-        get_weather_data(app.config['SECRET_KEY'], token)
 
+    print("authorization: " + authorization)
+    if not authorization.startswith("BEARER"):
+        return Response('Error: 400, Bad Request, authorization does not contain BEARER, Must be uppercase.'), 400
     else:
-        make_response(render_template('weather.html'), 401)
-
-    return render_template('weather.html')
+        authorization_token = authorization.replace("BEARER ", "")
+    print("authorization_token: " + authorization_token)
+    return get_weather_data(app.config['SECRET_KEY'], authorization_token)
 
 
 def get_weather_data(key, token):
     decoded_jwt = decode(key, token)
+
     url = url_builder(decoded_jwt)
     data = open_weather_retrieval(url)
     return configure_data(data, decoded_jwt)
 
 
 def decode(key, token):
-    decoded_jwt = jwt.decode(token, key, 'HS256')
-    return decoded_jwt
-    # print("Unable to decode provided jwt. Key" + key + " Token: " + token)
+    try:
+        jwt_decode = jwt.decode(token, key, 'HS256')
+        return jwt_decode
+    except Exception as e:
+        s = str(e)
+        print(s)
+        abort(jsonify({"Error 401: ": s, "Key": key, "Token": token})), 401
 
 
 def url_builder(decoded_jwt):
